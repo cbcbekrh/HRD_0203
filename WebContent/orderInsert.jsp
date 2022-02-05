@@ -16,13 +16,12 @@
 	if(orderdate == null){orderdate = "";}
 	if(ordername == null){ordername = "";}	
 	if(address == null){address = "";}	
-	if(orderqty == null || productid.equals("")){orderqty = "0";}	
 	String name = "";
-	String unitprice = "";		
 	int total = 0;
-	int A=0;
-	int B=0;
-	int C=0;
+	int unitprice = 0;
+	int qty = 0;
+	int unitsinstock = 0;
+		
 	if(productid == null || productid.equals("")){
 		productid="";
 	}else{	
@@ -31,25 +30,25 @@
 	rs=pstmt.executeQuery();
 	if(rs.next()){
 		name=rs.getString("name");
-		unitprice=rs.getString("unitprice");
-		C=rs.getInt("unitsinstock");
-		
-		if(orderqty != ""){
-			A=Integer.parseInt(unitprice);
-			B=Integer.parseInt(orderqty);
-			if(B > C){				
+		unitprice=rs.getInt("unitprice");
+		unitsinstock=rs.getInt("unitsinstock");
+		if(orderqty == null){
+			
+		}else{
+			qty=Integer.parseInt(orderqty);
+			if(qty > unitsinstock){
 				%>
-					<script>
-						alert("주문수량이 재고수량보다 많습니다.");
-					</script>
+				<script>
+					alert("주문수량이 재고수량보다 많습니다.");
+				</script>	
 				<%
+				qty=0;
 				total=0;
-				orderqty="";
 			}else{
-				total=A*B;
-				
+				total=qty*unitprice;
 			}
 		}
+		
 	}else{
 		%>
 			<script>
@@ -85,14 +84,14 @@
 
 <tr>
 <th>단가</th>
-<td><input style="height:22px;" type="text" name="unitprice" value="<%=unitprice %>"></td>
+<td><input style="height:22px;" type="text" name="unitprice" value="<%=unitprice %>" readonly></td>
 <th>주문수량</th>
-<td><input style="height:22px;" type="text" name="orderqty" value="<%=orderqty %>" onchange="on();"></td>
+<td><input style="height:22px;" type="text" name="orderqty" onchange="on();" value="<%=qty %>"></td>
 </tr>
 
 <tr>
 <th>주문금액</th>
-<td><input style="height:22px;" type="text" name="total" value="<%=total %>"></td>
+<td><input style="height:22px;" type="text" name="total" value="<%=total %>" readonly></td>
 <th>주문주소</th>
 <td><input style="height:22px;" type="text" name="address" value="<%=address %>"></td>
 </tr>
