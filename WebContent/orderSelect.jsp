@@ -74,14 +74,11 @@
 	 "onclick="if(!confirm('정말 삭제하시겠습니까?'))return false;">삭제</a>
 </td>
 </tr>
-
-
-
-
-
-
 <%} %>
 </table>
+<div style="text-align:center; padding-top:15px;">
+	<input id="b" type="button" value="작성" onclick="location.href='orderInsert.jsp'">
+</div>
 </section>
 <%@ include file="footer.jsp" %>
 </body>
